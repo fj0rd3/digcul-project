@@ -79,7 +79,7 @@ export async function parseCSV(filePath: string): Promise<SurveyRow[]> {
       complete: (results) => {
         resolve(results.data as SurveyRow[]);
       },
-      error: (error) => {
+      error: (error: Error) => {
         reject(error);
       },
     });

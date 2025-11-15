@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { exportComprehensivePDF, capturePlotlyImage } from '../lib/comprehensiveExport';
+import { exportComprehensivePDF } from '../lib/comprehensiveExport';
 import { parseCSV, SurveyRow, getAgeGroup, getSocialMediaPlatforms, convertTimeToNumeric } from '../lib/dataUtils';
 
 // Helper functions (same as StatisticalInsights)
