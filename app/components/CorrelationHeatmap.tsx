@@ -180,10 +180,7 @@ export default function CorrelationHeatmap() {
     >
       <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h2 className="text-lg text-zinc-400">Correlation Analysis</h2>
-          <p className="text-sm text-zinc-500 mt-2">
-            Explore relationships between variables. Values range from -1 (strong negative correlation) to +1 (strong positive correlation).
-          </p>
+          <h2 className="text-lg text-zinc-400">Correlation Heatmap</h2>
         </div>
 
         {plotData ? (

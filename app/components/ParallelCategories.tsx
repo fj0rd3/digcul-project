@@ -830,7 +830,7 @@ export default function ParallelCategories() {
               </div>
               
                 <div className="text-xs text-zinc-500 mt-2">
-                  Drag to reorder • Select 2-7 dimensions
+                  Drag to reorder • Select 2-9 dimensions
                 </div>
               </div>
             </div>

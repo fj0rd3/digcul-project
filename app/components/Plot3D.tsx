@@ -391,7 +391,7 @@ export default function Plot3D() {
       {/* Left Sidebar */}
       <div className="w-80 bg-zinc-900/95 backdrop-blur-sm border-r border-zinc-800 p-6 overflow-y-auto">
         <h2 className="text-xl font-semibold mb-6 text-white">
-          Variable Selection
+          3D Visualization
         </h2>
         
         <div className="space-y-6">
@@ -590,7 +590,6 @@ export default function Plot3D() {
                 showlegend: false,
               } : {
               title: {
-                text: '3D Social Media Use Visualization',
                 font: { size: 20, color: '#ffffff' },
               },
               scene: {

@@ -252,9 +252,6 @@ export default function StatisticalInsights() {
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Key Insights
           </h2>
-          <p className="text-lg text-zinc-400">
-            Statistical overview of the survey data
-          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
