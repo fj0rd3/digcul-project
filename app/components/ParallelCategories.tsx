@@ -164,7 +164,8 @@ export default function ParallelCategories() {
     { key: 'gender', label: 'Gender', columnIndex: 2 },
     { key: 'socialSciences', label: 'Studies Social Sciences', columnIndex: 3 },
     { key: 'timeSpent', label: 'Time Spent on Social Media', columnIndex: 5 },
-    { key: 'emotionalResponse', label: 'Emotional Response to Pol Content', columnIndex: 7 },
+    { key: 'emotionalResponseCompact', label: 'Emotional Response Compact', columnIndex: 7 },
+    { key: 'emotionalResponseComprehensive', label: 'Emotional Response Comprehensive', columnIndex: 7 },
     { key: 'politicalAlignment', label: 'Content Aligned with Own Opinions', columnIndex: 8 },
     { key: 'politicalInfoSource', label: 'Political Info Source', columnIndex: 9 },
   ], []);
@@ -388,10 +389,14 @@ export default function ParallelCategories() {
       const socialSciencesCol = headers[3];
       colorValues = validRows.map(row => removeFrenchlabel(row[socialSciencesCol]));
       colorLabel = 'Social Sciences';
-    } else if (colorBy === 'emotionalResponse') {
+    } else if (colorBy === 'emotionalResponseCompact') {
       const emotionCol = headers[7];
       colorValues = validRows.map(row => categorizeEmotion(removeFrenchlabel(row[emotionCol])));
-      colorLabel = 'Emotional Response';
+      colorLabel = 'Emotional Response (Compact)';
+    } else if (colorBy === 'emotionalResponseComprehensive') {
+      const emotionCol = headers[7];
+      colorValues = validRows.map(row => removeFrenchlabel(row[emotionCol]));
+      colorLabel = 'Emotional Response (Comprehensive)';
     }
     
     // Build dimensions array with color category breakdown
@@ -418,9 +423,13 @@ export default function ParallelCategories() {
         if (dim.key === 'timeSpent') {
           normalized = shortenTimeLabel(normalized);
         }
-        // Categorize emotional responses
-        if (dim.key === 'emotionalResponse') {
+        // Categorize emotional responses for compact version
+        if (dim.key === 'emotionalResponseCompact') {
           normalized = categorizeEmotion(normalized);
+        }
+        // For comprehensive version, just clean and don't categorize
+        if (dim.key === 'emotionalResponseComprehensive') {
+          // Already cleaned by removeFrenchlabel, just use as-is
         }
         return abbreviateLabel(normalized, 35);
       }).filter(v => v);
@@ -868,7 +877,8 @@ export default function ParallelCategories() {
                       { value: 'gender', label: 'Gender' },
                       { value: 'age', label: 'Age' },
                       { value: 'socialSciences', label: 'Social Sciences' },
-                      { value: 'emotionalResponse', label: 'Emotional Response' },
+                      { value: 'emotionalResponseCompact', label: 'Emotional Response (Compact)' },
+                      { value: 'emotionalResponseComprehensive', label: 'Emotional Response (Full)' },
                     ].map(option => (
                       <label key={option.value} className="flex items-center gap-1 cursor-pointer">
                         <input
