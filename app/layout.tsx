@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Digital Culture Dashboard",
+  title: "Digital Culture Group Project",
   description: "Interactive visualization and analysis of digital culture survey data",
 };
 
