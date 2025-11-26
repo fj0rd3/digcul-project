@@ -97,7 +97,7 @@ export default function NewsSourcesChart() {
     marker: {
       colors: colors.slice(0, plotData.length),
     },
-    textinfo: 'percent',
+    textinfo: 'percent' as const,
     textposition: 'outside' as const,
     textfont: { family: 'Arial, sans-serif', size: 10, color: '#a1a1aa' },
     hovertemplate: '<b>%{label}</b><br>%{value} responses<br>%{percent}<extra></extra>',
