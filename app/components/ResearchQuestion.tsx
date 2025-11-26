@@ -1,71 +1,24 @@
-'use client';
-
-import { useEffect, useRef, useState } from 'react';
-
 export default function ResearchQuestion() {
-  const [scrollY, setScrollY] = useState(0);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect();
-        setScrollY(-rect.top);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <section
-      ref={sectionRef}
       className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-zinc-900 to-black"
     >
-      {/* Parallax background layers - continuing from intro */}
-      <div
-        className="absolute inset-0 opacity-20"
-        style={{
-          transform: `translateY(${scrollY * 0.4}px)`,
-          transition: 'transform 0.1s ease-out',
-        }}
-      >
+      {/* Background layers */}
+      <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0 bg-gradient-to-br from-orange-900/20 via-zinc-900/50 to-black/50"></div>
       </div>
 
-      <div
-        className="absolute inset-0 opacity-15"
-        style={{
-          transform: `translateY(${scrollY * 0.25}px)`,
-          transition: 'transform 0.1s ease-out',
-        }}
-      >
+      <div className="absolute inset-0 opacity-15">
         <div className="absolute inset-0 bg-gradient-to-tr from-black/50 via-orange-800/10 to-zinc-900/50"></div>
       </div>
 
       {/* Decorative elements */}
-      <div
-        className="absolute top-1/4 left-1/4 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl"
-        style={{
-          transform: `translateY(${scrollY * 0.3}px)`,
-        }}
-      />
-      <div
-        className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl"
-        style={{
-          transform: `translateY(${scrollY * 0.2}px)`,
-        }}
-      />
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl" />
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div
-          className="transform transition-all duration-500"
-          style={{
-            transform: `translateY(${Math.min(scrollY * 0.1, 30)}px)`,
-          }}
-        >
+        <div>
           {/* Label */}
           <span className="inline-block px-4 py-1.5 mb-8 text-xs font-semibold tracking-wider text-orange-400 uppercase bg-orange-500/10 rounded-full border border-orange-500/20">
             Research Question
@@ -106,4 +59,3 @@ export default function ResearchQuestion() {
     </section>
   );
 }
-
