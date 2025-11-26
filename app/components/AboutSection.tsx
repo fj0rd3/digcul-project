@@ -70,74 +70,138 @@ export default function AboutSection() {
 
             {/* Content */}
             <div className="p-8">
-              <h2 className="text-3xl font-bold text-white mb-6">About This Research</h2>
+              <h2 className="text-3xl font-bold text-white mb-6">Methodology</h2>
 
               <div className="space-y-6 text-zinc-300">
+                {/* Sample Overview */}
                 <section>
-                  <h3 className="text-xl font-semibold text-white mb-3">Research Overview</h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">Sample Overview</h3>
                   <p className="leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
-                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non 
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    For this project, we surveyed <strong className="text-orange-400">100 individuals</strong> between 
+                    the ages of <strong className="text-orange-400">17 and 25</strong>. Women are overrepresented in our 
+                    sample (<strong className="text-orange-400">80%</strong>). Additionally, individuals aged 18 to 20 
+                    make up over <strong className="text-orange-400">75%</strong> of our sample.
                   </p>
                   <p className="leading-relaxed mt-3">
-                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque 
-                    ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia 
-                    voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+                    Half of our sample primarily studies the social sciences, and half does not. We made efforts to include 
+                    non-Sciences Po students to combat the potential bias introduced by their more academic knowledge of politics. 
+                    Indeed, we found that social science students report being exposed to more political content on social media 
+                    than students in other fields.
                   </p>
                 </section>
 
-                <section>
-                  <h3 className="text-xl font-semibold text-white mb-3">Methodology</h3>
-                  <p className="leading-relaxed">
-                    Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi 
-                    tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem 
-                    ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
-                  </p>
-                  <p className="leading-relaxed mt-3">
-                    Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem 
-                    eum fugiat quo voluptas nulla pariatur. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium 
-                    voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.
-                  </p>
-                </section>
+                {/* Demographics Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-4">
+                  <div className="bg-zinc-800/50 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-orange-400">100</div>
+                    <div className="text-sm text-zinc-400">Participants</div>
+                  </div>
+                  <div className="bg-zinc-800/50 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-orange-400">17-25</div>
+                    <div className="text-sm text-zinc-400">Age Range</div>
+                  </div>
+                  <div className="bg-zinc-800/50 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-orange-400">80%</div>
+                    <div className="text-sm text-zinc-400">Women</div>
+                  </div>
+                  <div className="bg-zinc-800/50 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-orange-400">50%</div>
+                    <div className="text-sm text-zinc-400">Social Sciences</div>
+                  </div>
+                </div>
 
+                {/* Social Media Usage */}
                 <section>
-                  <h3 className="text-xl font-semibold text-white mb-3">Research Questions</h3>
-                  <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit?</li>
-                    <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?</li>
-                    <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris?</li>
-                    <li>Duis aute irure dolor in reprehenderit in voluptate velit esse?</li>
-                    <li>Excepteur sint occaecat cupidatat non proident, sunt in culpa?</li>
+                  <h3 className="text-xl font-semibold text-white mb-3">Social Media Usage Investigation</h3>
+                  <p className="leading-relaxed">
+                    After collecting demographic information, we investigated several dimensions of individuals&apos; 
+                    social media usage:
+                  </p>
+                  <ul className="mt-3 space-y-2">
+                    <li className="flex items-start gap-2">
+                      <span className="text-orange-400 mt-1">•</span>
+                      <span>Daily time spent on social media (estimated)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-orange-400 mt-1">•</span>
+                      <span>Primary platform used</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-orange-400 mt-1">•</span>
+                      <span>Types of content primarily encountered</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-orange-400 mt-1">•</span>
+                      <span>Emotional response to content</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-orange-400 mt-1">•</span>
+                      <span>Trusted accounts for political/news information</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-orange-400 mt-1">•</span>
+                      <span>Agreement with political content encountered</span>
+                    </li>
                   </ul>
                 </section>
 
+                {/* Political Opinion Measurement */}
                 <section>
-                  <h3 className="text-xl font-semibold text-white mb-3">Data Collection</h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">Measuring Political Opinion</h3>
                   <p className="leading-relaxed">
-                    Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis 
-                    est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod 
-                    maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
+                    To estimate the political opinion of respondents, we adopted a survey model from one of our 
+                    comparative politics lectures. We asked respondents to express their opinion on an equal number 
+                    of economic and social policies by offering seven options from &quot;strongly support&quot; to 
+                    &quot;strongly oppose.&quot;
                   </p>
                   <p className="leading-relaxed mt-3">
-                    Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint 
-                    et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores 
-                    alias consequatur aut perferendis doloribus asperiores repellat.
+                    We then coded these responses into numbers from 1 to 7, with smaller values representing leftist 
+                    stances and larger values indicating those on the right. We derived averages of social ideology 
+                    and economic ideology for each person.
                   </p>
                 </section>
 
+                {/* Political Engagement Measurement */}
+                <section>
+                  <h3 className="text-xl font-semibold text-white mb-3">Measuring Political Engagement</h3>
+                  <p className="leading-relaxed">
+                    Our measure of political engagement relies on people&apos;s <strong className="text-white">reported 
+                    preferences</strong>, not their actual actions. This must be kept in mind when discussing our results.
+                  </p>
+                  <p className="leading-relaxed mt-3">
+                    We asked respondents to assign a value to eight political engagement methods, ranging from more 
+                    traditional (such as voting) to more informal and social media-based (sharing activist media). 
+                    They were meant to rank these methods based on their perceived effectiveness for achieving 
+                    political change.
+                  </p>
+                  <div className="mt-4 bg-zinc-800/50 rounded-lg p-4">
+                    <h4 className="text-sm font-semibold text-orange-400 uppercase tracking-wider mb-2">
+                      Engagement Methods Evaluated
+                    </h4>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <span>• Signing Petitions</span>
+                      <span>• Sharing Activist Media</span>
+                      <span>• Joining Political Parties</span>
+                      <span>• Attending Protests</span>
+                      <span>• Contacting Elected Officials</span>
+                      <span>• Voting</span>
+                      <span>• Debating Political Issues</span>
+                      <span>• Staying Informed</span>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Limitations */}
                 <section>
                   <h3 className="text-xl font-semibold text-white mb-3">Limitations</h3>
                   <p className="leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
-                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Only two respondents reported that they never used social media, so we cannot meaningfully study 
+                    ideological divergence between users and non-users.
                   </p>
                   <p className="leading-relaxed mt-3">
-                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut 
-                    perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa 
-                    quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                    We also noticed that the survey allowed respondents to pick the same ranking for several engagement 
+                    methods. To remedy this issue, we filtered out responses that used unique rankings 1-8 and kept 
+                    only those that did not (the majority).
                   </p>
                 </section>
               </div>
@@ -148,4 +212,3 @@ export default function AboutSection() {
     </>
   );
 }
-

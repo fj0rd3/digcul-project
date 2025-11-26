@@ -22,7 +22,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo/Brand */}
           <div className="flex-shrink-0">
-            <h1 className="text-xl font-bold text-white">Digital Culture Study</h1>
+            <h1 className="text-xl font-bold text-white">Digital Culture Project</h1>
           </div>
 
           {/* Desktop Navigation */}
@@ -56,7 +56,7 @@ export default function Navbar() {
                 href="#about"
                 className="text-zinc-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
-                About
+                Methodology
               </a>
             </div>
           </div>

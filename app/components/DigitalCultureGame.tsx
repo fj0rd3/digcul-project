@@ -360,12 +360,28 @@ export default function DigitalCultureGame() {
     setCurrentSpeaker('avery');
   };
 
+  // Show only the start button initially
+  if (!gameStarted) {
+    return (
+      <div className="flex flex-col items-center justify-center py-8">
+        <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-700/50 p-8 text-center">
+          <button
+            onClick={startGame}
+            className="px-8 py-4 bg-orange-500 hover:bg-orange-400 text-white font-semibold rounded-lg transition-all duration-300 flex items-center gap-3 shadow-lg mx-auto hover:scale-105"
+          >
+            <span className="text-2xl">▶</span> Start Game
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col lg:flex-row gap-6 items-start justify-center">
+    <div className="flex flex-col lg:flex-row gap-6 items-start justify-center animate-fade-in">
       {/* Game Canvas */}
       <div 
         ref={gameRef}
-        className="relative w-full max-w-[600px] lg:min-w-[500px] rounded-xl overflow-hidden border border-zinc-700 shadow-2xl bg-zinc-900 flex-shrink-0"
+        className="relative w-full max-w-[600px] lg:min-w-[500px] rounded-xl overflow-hidden border border-zinc-700 shadow-2xl bg-zinc-900 flex-shrink-0 animate-slide-in-left"
         style={{ aspectRatio: '4/3' }}
         tabIndex={0}
       >
@@ -381,89 +397,73 @@ export default function DigitalCultureGame() {
         {/* Dark overlay for better text readability */}
         <div className="absolute inset-0 bg-black/20" />
 
-        {/* Start screen */}
-        {!gameStarted && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center z-20 bg-black/60">
-            <h3 className="text-2xl font-bold text-white mb-4">Game</h3>
-            <button
-              onClick={startGame}
-              className="px-6 py-3 bg-orange-500 hover:bg-orange-400 text-white font-semibold rounded-lg transition-colors flex items-center gap-2 shadow-lg"
-            >
-              <span className="text-xl">▶</span> Start Game
-            </button>
-          </div>
-        )}
-
         {/* Game area */}
-        {gameStarted && (
-          <>
-            {/* Play Again button during endings */}
-            {(scene === 'ending-passive' || scene === 'ending-active') && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30">
-                <button
-                  onClick={restartGame}
-                  className="px-5 py-2 bg-orange-500 hover:bg-orange-400 text-white font-semibold rounded-lg transition-colors shadow-lg"
-                >
-                  Play Again
-                </button>
-              </div>
-            )}
-
-            {/* Character - Avery */}
-            {showCharacter && (
-              <div
-                className="absolute transition-all duration-75 z-10"
-                style={{
-                  left: `calc(50% + ${position.x}px)`,
-                  bottom: `calc(25% + ${position.y}px)`,
-                  transform: 'translateX(-50%)',
-                  width: `${characterSize}px`,
-                  height: `${characterSize * 1.9}px`,
-                }}
+        <>
+          {/* Play Again button during endings */}
+          {(scene === 'ending-passive' || scene === 'ending-active') && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30">
+              <button
+                onClick={restartGame}
+                className="px-5 py-2 bg-orange-500 hover:bg-orange-400 text-white font-semibold rounded-lg transition-colors shadow-lg"
               >
-                <Image
-                  src={getCurrentSprite()}
-                  alt="Avery"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            )}
+                Play Again
+              </button>
+            </div>
+          )}
 
-            {/* Character - Dee */}
-            {showDee && (
-              <div
-                className="absolute z-10"
-                style={{
-                  left: 'calc(50% + 120px)',
-                  bottom: 'calc(25% - 40px)',
-                  transform: 'translateX(-50%)',
-                  width: '50px',
-                  height: '95px',
-                }}
-              >
-                <Image
-                  src="/game/dee-stand.svg"
-                  alt="Dee"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            )}
+          {/* Character - Avery */}
+          {showCharacter && (
+            <div
+              className="absolute transition-all duration-75 z-10"
+              style={{
+                left: `calc(50% + ${position.x}px)`,
+                bottom: `calc(25% + ${position.y}px)`,
+                transform: 'translateX(-50%)',
+                width: `${characterSize}px`,
+                height: `${characterSize * 1.9}px`,
+              }}
+            >
+              <Image
+                src={getCurrentSprite()}
+                alt="Avery"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          )}
 
-          </>
-        )}
+          {/* Character - Dee */}
+          {showDee && (
+            <div
+              className="absolute z-10"
+              style={{
+                left: 'calc(50% + 120px)',
+                bottom: 'calc(25% - 40px)',
+                transform: 'translateX(-50%)',
+                width: '50px',
+                height: '95px',
+              }}
+            >
+              <Image
+                src="/game/dee-stand.svg"
+                alt="Dee"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          )}
+        </>
 
       </div>
 
       {/* Speech Panel - Right Side */}
-      <div className="w-full lg:w-80 flex-shrink-0">
+      <div className="w-full lg:w-80 flex-shrink-0 animate-slide-in-right">
         <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-700/50 p-5 min-h-[200px]">
           {/* Panel Header */}
           <div className="flex items-center gap-2 mb-4 pb-3 border-b border-zinc-700/50">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 ${
               currentSpeaker === 'dee' ? 'bg-blue-500/20' : currentSpeaker === 'narrator' ? 'bg-purple-500/20' : 'bg-orange-500/20'
             }`}>
               <span className="text-xl">
@@ -481,53 +481,57 @@ export default function DigitalCultureGame() {
           </div>
 
           {/* Speech Content */}
-          {currentText ? (
-            <div>
-              <p className="text-zinc-200 text-sm leading-relaxed">{currentText}</p>
-              <div className={`mt-4 flex items-center gap-2 ${
-                currentSpeaker === 'dee' ? 'text-blue-400' : currentSpeaker === 'narrator' ? 'text-purple-400' : 'text-orange-400'
-              }`}>
-                <span className="animate-pulse text-lg">●</span>
-                <span className="text-xs font-medium">Speaking...</span>
+          <div className="transition-opacity duration-300">
+            {currentText ? (
+              <div>
+                <p className="text-zinc-200 text-sm leading-relaxed">{currentText}</p>
+                <div className={`mt-4 flex items-center gap-2 transition-colors duration-300 ${
+                  currentSpeaker === 'dee' ? 'text-blue-400' : currentSpeaker === 'narrator' ? 'text-purple-400' : 'text-orange-400'
+                }`}>
+                  <span className="animate-pulse text-lg">●</span>
+                  <span className="text-xs font-medium">Speaking...</span>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="text-zinc-500 text-sm">
-              {!gameStarted ? (
-                <p>Click <span className="text-orange-400 font-medium">Start Game</span> to begin the simulation.</p>
-              ) : scene === 'ending-passive' || scene === 'ending-active' ? (
-                <p>You&apos;ve reached an ending! Click <span className="text-orange-400 font-medium">Play Again</span> to try a different path.</p>
-              ) : (
-                <p>Use the <span className="text-white font-medium">arrow keys</span> to move and explore. Make your choices!</p>
-              )}
-            </div>
-          )}
+            ) : (
+              <div className="text-zinc-500 text-sm">
+                {scene === 'ending-passive' || scene === 'ending-active' ? (
+                  <p>You&apos;ve reached an ending! Click <span className="text-orange-400 font-medium">Play Again</span> to try a different path.</p>
+                ) : (
+                  <p>Use the <span className="text-white font-medium">arrow keys</span> to move and explore. Make your choices!</p>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Instructions Card */}
-        {gameStarted && !isSpeaking && scene !== 'ending-passive' && scene !== 'ending-active' && (
-          <div className="mt-4 bg-zinc-800/50 rounded-lg p-4 border border-zinc-700/30">
-            <h5 className="text-zinc-400 text-xs font-semibold uppercase tracking-wider mb-2">Controls</h5>
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="flex items-center gap-2 text-zinc-300">
-                <kbd className="px-1.5 py-0.5 bg-zinc-700 rounded border border-zinc-600">←</kbd>
-                <span>Move left</span>
-              </div>
-              <div className="flex items-center gap-2 text-zinc-300">
-                <kbd className="px-1.5 py-0.5 bg-zinc-700 rounded border border-zinc-600">→</kbd>
-                <span>Move right</span>
-              </div>
-              <div className="flex items-center gap-2 text-zinc-300">
-                <kbd className="px-1.5 py-0.5 bg-zinc-700 rounded border border-zinc-600">↑</kbd>
-                <span>Move up</span>
-              </div>
-              <div className="flex items-center gap-2 text-zinc-300">
-                <kbd className="px-1.5 py-0.5 bg-zinc-700 rounded border border-zinc-600">↓</kbd>
-                <span>Move down</span>
-              </div>
+        <div 
+          className={`mt-4 bg-zinc-800/50 rounded-lg p-4 border border-zinc-700/30 transition-all duration-300 ${
+            !isSpeaking && scene !== 'ending-passive' && scene !== 'ending-active' && gameStarted
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-2 pointer-events-none h-0 mt-0 p-0 overflow-hidden'
+          }`}
+        >
+          <h5 className="text-zinc-400 text-xs font-semibold uppercase tracking-wider mb-2">Controls</h5>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="flex items-center gap-2 text-zinc-300">
+              <kbd className="px-1.5 py-0.5 bg-zinc-700 rounded border border-zinc-600">←</kbd>
+              <span>Move left</span>
+            </div>
+            <div className="flex items-center gap-2 text-zinc-300">
+              <kbd className="px-1.5 py-0.5 bg-zinc-700 rounded border border-zinc-600">→</kbd>
+              <span>Move right</span>
+            </div>
+            <div className="flex items-center gap-2 text-zinc-300">
+              <kbd className="px-1.5 py-0.5 bg-zinc-700 rounded border border-zinc-600">↑</kbd>
+              <span>Move up</span>
+            </div>
+            <div className="flex items-center gap-2 text-zinc-300">
+              <kbd className="px-1.5 py-0.5 bg-zinc-700 rounded border border-zinc-600">↓</kbd>
+              <span>Move down</span>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
