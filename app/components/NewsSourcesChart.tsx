@@ -98,10 +98,10 @@ export default function NewsSourcesChart() {
       colors: colors.slice(0, plotData.length),
     },
     textinfo: 'percent',
-    textposition: 'outside',
+    textposition: 'outside' as const,
     textfont: { size: 10, color: '#a1a1aa' },
     hovertemplate: '<b>%{label}</b><br>%{value} responses<br>%{percent}<extra></extra>',
-    pull: plotData.map((d, i) => i === 0 ? 0.05 : 0), // Pull out the largest slice slightly
+    pull: plotData.map((_, i) => i === 0 ? 0.05 : 0), // Pull out the largest slice slightly
   };
 
   return (
