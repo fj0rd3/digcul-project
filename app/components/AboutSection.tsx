@@ -106,7 +106,7 @@ export default function AboutSection() {
                   </div>
                   <div className="bg-zinc-800/50 rounded-lg p-4 text-center">
                     <div className="text-2xl font-bold text-orange-400">50%</div>
-                    <div className="text-sm text-zinc-400">Social Sciences</div>
+                    <div className="text-sm text-zinc-400">Students of Social Sciences</div>
                   </div>
                 </div>
 
@@ -155,7 +155,7 @@ export default function AboutSection() {
                     &quot;strongly oppose.&quot;
                   </p>
                   <p className="leading-relaxed mt-3">
-                    We then coded these responses into numbers from 1 to 7, with smaller values representing leftist 
+                    We then coded these responses into numbers from 1 to 8, with smaller values representing leftist 
                     stances and larger values indicating those on the right. We derived averages of social ideology 
                     and economic ideology for each person.
                   </p>
