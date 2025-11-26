@@ -15,6 +15,7 @@ import {
   SurveyRow,
 } from '../lib/dataUtils';
 import SavedViewsManager from './SavedViewsManager';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 // Dynamically import Plotly to avoid SSR issues
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
@@ -36,7 +37,9 @@ export default function Plot3D() {
     is2D: boolean;
     platforms: string;
   } | null>(null);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const plotContainerRef = useRef<HTMLDivElement | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     async function loadData() {
@@ -386,188 +389,192 @@ export default function Plot3D() {
     if (state.trendlinePlatforms) setTrendlinePlatforms(state.trendlinePlatforms);
   };
 
-  return (
-    <div className="flex min-h-screen bg-gradient-to-b from-zinc-900 to-black pt-16">
-      {/* Left Sidebar */}
-      <div className="w-80 bg-zinc-900/95 backdrop-blur-sm border-r border-zinc-800 p-6 overflow-y-auto">
-        <h2 className="text-xl font-semibold mb-6 text-white">
-          3D Visualization
-        </h2>
-        
-        <div className="space-y-6">
-          {/* Y-axis selector */}
-          <div>
-            <label className="block text-sm font-medium mb-2 text-zinc-300">
-              Y-Axis Variable
-            </label>
-            <select
-              value={selectedY}
-              onChange={(e) => setSelectedY(e.target.value)}
-              className="w-full px-3 py-2 border border-zinc-700 rounded-md bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Select Y-axis variable...</option>
-              {ordinalVars.map((var_) => (
-                <option key={var_.key} value={var_.key}>
-                  {var_.label}
-                </option>
-              ))}
-            </select>
-          </div>
+  // Sidebar content (shared between desktop and mobile drawer)
+  const sidebarContent = (
+    <div className="space-y-6">
+      {/* Y-axis selector */}
+      <div>
+        <label className="block text-sm font-medium mb-2 text-zinc-300">
+          Y-Axis Variable
+        </label>
+        <select
+          value={selectedY}
+          onChange={(e) => setSelectedY(e.target.value)}
+          className="w-full px-3 py-2 border border-zinc-700 rounded-md bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">Select Y-axis variable...</option>
+          {ordinalVars.map((var_) => (
+            <option key={var_.key} value={var_.key}>
+              {var_.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
-          {/* Z-axis selector */}
-          <div>
-            <label className="block text-sm font-medium mb-2 text-zinc-300">
-              Z-Axis Variable
-            </label>
-            <select
-              value={selectedZ}
-              onChange={(e) => setSelectedZ(e.target.value)}
-              className="w-full px-3 py-2 border border-zinc-700 rounded-md bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Select Z-axis variable...</option>
-              <option value="None">None (2D Plot)</option>
-              {ordinalVars.map((var_) => (
-                <option key={var_.key} value={var_.key}>
-                  {var_.label}
-                </option>
-              ))}
-            </select>
-          </div>
+      {/* Z-axis selector */}
+      <div>
+        <label className="block text-sm font-medium mb-2 text-zinc-300">
+          Z-Axis Variable
+        </label>
+        <select
+          value={selectedZ}
+          onChange={(e) => setSelectedZ(e.target.value)}
+          className="w-full px-3 py-2 border border-zinc-700 rounded-md bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">Select Z-axis variable...</option>
+          <option value="None">None (2D Plot)</option>
+          {ordinalVars.map((var_) => (
+            <option key={var_.key} value={var_.key}>
+              {var_.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
-          {/* Trendline Controls */}
-          <div className="mt-8 pt-6 border-t border-zinc-700">
-            <h3 className="text-sm font-semibold mb-3 text-white">
-              Trendline Options
-            </h3>
-            <div className="space-y-4">
-              <button
-                onClick={() => setShowTrendline(!showTrendline)}
-                className={`w-full px-4 py-2 rounded-md font-medium transition-colors ${
-                  showTrendline
-                    ? 'bg-blue-600 text-white hover:bg-blue-700'
-                    : 'bg-zinc-800 text-zinc-300 border border-zinc-700 hover:bg-zinc-700'
-                }`}
-              >
-                {showTrendline ? 'Hide Trendline' : 'Show Trendline'}
-              </button>
-              
-              {showTrendline && (
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="block text-sm font-medium text-zinc-300">
-                      Select Platforms for Trendline
-                    </label>
-                    <button
-                      onClick={() => {
-                        if (trendlinePlatforms.length === socialMediaPlatforms.length) {
-                          setTrendlinePlatforms([]);
+      {/* Trendline Controls */}
+      <div className="pt-6 border-t border-zinc-700">
+        <h3 className="text-sm font-semibold mb-3 text-white">
+          Trendline Options
+        </h3>
+        <div className="space-y-4">
+          <button
+            onClick={() => setShowTrendline(!showTrendline)}
+            className={`w-full px-4 py-2 rounded-md font-medium transition-colors ${
+              showTrendline
+                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                : 'bg-zinc-800 text-zinc-300 border border-zinc-700 hover:bg-zinc-700'
+            }`}
+          >
+            {showTrendline ? 'Hide Trendline' : 'Show Trendline'}
+          </button>
+          
+          {showTrendline && (
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-sm font-medium text-zinc-300">
+                  Select Platforms for Trendline
+                </label>
+                <button
+                  onClick={() => {
+                    if (trendlinePlatforms.length === socialMediaPlatforms.length) {
+                      setTrendlinePlatforms([]);
+                    } else {
+                      setTrendlinePlatforms([...socialMediaPlatforms]);
+                    }
+                  }}
+                  className="text-xs text-blue-400 hover:text-blue-300"
+                >
+                  {trendlinePlatforms.length === socialMediaPlatforms.length ? 'Deselect All' : 'Select All'}
+                </button>
+              </div>
+              <div className="space-y-2 max-h-48 overflow-y-auto border border-zinc-700 rounded-md p-2 bg-zinc-800">
+                {socialMediaPlatforms.map((platform) => (
+                  <label
+                    key={platform}
+                    className="flex items-center gap-2 cursor-pointer hover:bg-zinc-700 p-1 rounded"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={trendlinePlatforms.includes(platform)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setTrendlinePlatforms([...trendlinePlatforms, platform]);
                         } else {
-                          setTrendlinePlatforms([...socialMediaPlatforms]);
+                          setTrendlinePlatforms(trendlinePlatforms.filter(p => p !== platform));
                         }
                       }}
-                      className="text-xs text-blue-400 hover:text-blue-300"
-                    >
-                      {trendlinePlatforms.length === socialMediaPlatforms.length ? 'Deselect All' : 'Select All'}
-                    </button>
-                  </div>
-                  <div className="space-y-2 max-h-48 overflow-y-auto border border-zinc-700 rounded-md p-2 bg-zinc-800">
-                    {socialMediaPlatforms.map((platform) => (
-                      <label
-                        key={platform}
-                        className="flex items-center gap-2 cursor-pointer hover:bg-zinc-700 p-1 rounded"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={trendlinePlatforms.includes(platform)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setTrendlinePlatforms([...trendlinePlatforms, platform]);
-                            } else {
-                              setTrendlinePlatforms(trendlinePlatforms.filter(p => p !== platform));
-                            }
-                          }}
-                          className="w-4 h-4 rounded border-zinc-600 bg-zinc-700 text-blue-600 focus:ring-blue-500 focus:ring-2"
-                        />
-                        <div className="flex items-center gap-2 flex-1">
-                          <div 
-                            className="w-3 h-3 rounded" 
-                            style={{ backgroundColor: getSocialMediaColor(platform) }}
-                          ></div>
-                          <span className="text-sm text-zinc-300">{platform}</span>
-                        </div>
-                      </label>
-                    ))}
-                  </div>
-                  {trendlinePlatforms.length === 0 && (
-                    <p className="text-xs text-yellow-400 mt-2">Please select at least one platform</p>
-                  )}
-                </div>
+                      className="w-4 h-4 rounded border-zinc-600 bg-zinc-700 text-blue-600 focus:ring-blue-500 focus:ring-2"
+                    />
+                    <div className="flex items-center gap-2 flex-1">
+                      <div 
+                        className="w-3 h-3 rounded" 
+                        style={{ backgroundColor: getSocialMediaColor(platform) }}
+                      ></div>
+                      <span className="text-sm text-zinc-300">{platform}</span>
+                    </div>
+                  </label>
+                ))}
+              </div>
+              {trendlinePlatforms.length === 0 && (
+                <p className="text-xs text-yellow-400 mt-2">Please select at least one platform</p>
               )}
             </div>
-          </div>
-
-          {/* Saved Views */}
-          <div className="mt-8 pt-6 border-t border-zinc-700">
-            <SavedViewsManager
-              type="3d-plot"
-              currentState={getCurrentState()}
-              onLoadView={handleLoadView}
-            />
-          </div>
-
-          {/* Legend */}
-          <div className="mt-8 pt-6 border-t border-zinc-700">
-            <h3 className="text-sm font-semibold mb-3 text-white">
-              Color Legend (Social Media Platform)
-            </h3>
-            <div className="space-y-2 text-xs">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded" style={{ backgroundColor: '#FF006E' }}></div>
-                <span className="text-zinc-300">Instagram</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded" style={{ backgroundColor: '#9D4EDD' }}></div>
-                <span className="text-zinc-300">TikTok</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded" style={{ backgroundColor: '#00A8FF' }}></div>
-                <span className="text-zinc-300">Facebook</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded" style={{ backgroundColor: '#FF1744' }}></div>
-                <span className="text-zinc-300">Pinterest</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded" style={{ backgroundColor: '#FFA500' }}></div>
-                <span className="text-zinc-300">Other</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded" style={{ backgroundColor: '#E0E0E0' }}></div>
-                <span className="text-zinc-300">No Social Media</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Likert Scale Explanation */}
+          )}
         </div>
       </div>
 
+      {/* Saved Views */}
+      <div className="pt-6 border-t border-zinc-700">
+        <SavedViewsManager
+          type="3d-plot"
+          currentState={getCurrentState()}
+          onLoadView={handleLoadView}
+        />
+      </div>
+
+      {/* Legend */}
+      <div className="pt-6 border-t border-zinc-700">
+        <h3 className="text-sm font-semibold mb-3 text-white">
+          Color Legend (Social Media Platform)
+        </h3>
+        <div className={isMobile ? 'flex flex-wrap gap-3' : 'space-y-2 text-xs'}>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#FF006E' }}></div>
+            <span className="text-zinc-300 text-xs">Instagram</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#9D4EDD' }}></div>
+            <span className="text-zinc-300 text-xs">TikTok</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#00A8FF' }}></div>
+            <span className="text-zinc-300 text-xs">Facebook</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#FF1744' }}></div>
+            <span className="text-zinc-300 text-xs">Pinterest</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#FFA500' }}></div>
+            <span className="text-zinc-300 text-xs">Other</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#E0E0E0' }}></div>
+            <span className="text-zinc-300 text-xs">No Social Media</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className={`${isMobile ? 'flex flex-col' : 'flex'} min-h-screen bg-gradient-to-b from-zinc-900 to-black ${isMobile ? 'pt-4' : 'pt-16'}`}>
+      {/* Left Sidebar (Desktop only) */}
+      {!isMobile && (
+        <div className="w-80 bg-zinc-900/95 backdrop-blur-sm border-r border-zinc-800 p-6 overflow-y-auto">
+          <h2 className="text-xl font-semibold mb-6 text-white">
+            3D Visualization
+          </h2>
+          {sidebarContent}
+        </div>
+      )}
+
       {/* Main Plot Area */}
-      <div className="flex-1 p-6 flex flex-col">
+      <div className={`flex-1 flex flex-col ${isMobile ? 'p-3' : 'p-6'}`}>
         {plotData ? (
-          <div ref={plotContainerRef} className="flex-1">
+          <div ref={plotContainerRef} className="flex-1" style={{ minHeight: isMobile ? '300px' : '400px' }}>
             <Plot
               data={plotData}
               layout={is2D ? {
                 title: {
-                  text: '2D Social Media Use Visualization',
-                  font: { size: 20, color: '#ffffff' },
+                  text: isMobile ? '' : '2D Social Media Use Visualization',
+                  font: { size: isMobile ? 14 : 20, color: '#ffffff' },
                 },
                 xaxis: {
                   title: {
                     text: 'Social Media Use (hours/day)',
-                    font: { size: 16, color: '#ffffff' },
-                    standoff: 10,
+                    font: { size: isMobile ? 12 : 16, color: '#ffffff' },
+                    standoff: isMobile ? 5 : 10,
                   },
                   gridcolor: '#333333',
                   color: '#ffffff',
@@ -576,27 +583,27 @@ export default function Plot3D() {
                 yaxis: {
                   title: {
                     text: yVar?.label || 'Y-Axis',
-                    font: { size: 16, color: '#ffffff' },
-                    standoff: 10,
+                    font: { size: isMobile ? 12 : 16, color: '#ffffff' },
+                    standoff: isMobile ? 5 : 10,
                   },
                   gridcolor: '#333333',
                   color: '#ffffff',
                   showticklabels: true,
                 },
-                margin: { l: 100, r: 100, t: 80, b: 100 },
+                margin: isMobile ? { l: 50, r: 20, t: 20, b: 60 } : { l: 100, r: 100, t: 80, b: 100 },
                 paper_bgcolor: 'rgba(0,0,0,0)',
                 plot_bgcolor: 'rgba(0,0,0,0)',
                 font: { color: '#ffffff' },
                 showlegend: false,
               } : {
               title: {
-                font: { size: 20, color: '#ffffff' },
+                font: { size: isMobile ? 14 : 20, color: '#ffffff' },
               },
               scene: {
                 xaxis: {
                   title: {
                     text: 'Social Media Use (hours/day)',
-                    font: { size: 16, color: '#ffffff' },
+                    font: { size: isMobile ? 10 : 16, color: '#ffffff' },
                   },
                   gridcolor: '#333333',
                   color: '#ffffff',
@@ -605,7 +612,7 @@ export default function Plot3D() {
                 yaxis: {
                   title: {
                     text: yVar?.label || 'Y-Axis',
-                    font: { size: 16, color: '#ffffff' },
+                    font: { size: isMobile ? 10 : 16, color: '#ffffff' },
                   },
                   gridcolor: '#333333',
                   color: '#ffffff',
@@ -614,7 +621,7 @@ export default function Plot3D() {
                 zaxis: {
                   title: {
                     text: zVar?.label || 'Z-Axis',
-                    font: { size: 16, color: '#ffffff' },
+                    font: { size: isMobile ? 10 : 16, color: '#ffffff' },
                   },
                   gridcolor: '#333333',
                   color: '#ffffff',
@@ -625,14 +632,14 @@ export default function Plot3D() {
                   eye: { x: 1.5, y: 1.5, z: 1.5 },
                 },
               },
-              margin: { l: 0, r: 0, t: 50, b: 0 },
+              margin: isMobile ? { l: 0, r: 0, t: 20, b: 0 } : { l: 0, r: 0, t: 50, b: 0 },
               paper_bgcolor: 'rgba(0,0,0,0)',
               plot_bgcolor: 'rgba(0,0,0,0)',
               font: { color: '#ffffff' },
               showlegend: false,
             }}
             config={{
-              displayModeBar: true,
+              displayModeBar: !isMobile,
               displaylogo: false,
               responsive: true,
             }}
@@ -640,7 +647,7 @@ export default function Plot3D() {
           />
           </div>
         ) : (
-          <div className="flex items-center justify-center h-full">
+          <div className="flex items-center justify-center h-full min-h-[300px]">
             <div className="text-lg text-zinc-400">
               Loading plot data...
             </div>
@@ -649,16 +656,18 @@ export default function Plot3D() {
         
         {/* Trendline Statistics - Below Plot */}
         {trendlineStats && trendlinePlatforms.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-zinc-700">
-            <div className="flex flex-wrap items-center gap-4 text-sm">
+          <div className={`mt-4 pt-4 border-t border-zinc-700 ${isMobile ? 'text-xs' : 'text-sm'}`}>
+            <div className={`flex flex-wrap items-center gap-4 ${isMobile ? 'gap-2' : 'gap-4'}`}>
               <div className="flex items-center gap-2">
                 <span className="text-zinc-400">Platforms:</span>
                 <span className="text-zinc-200 font-medium">{trendlineStats.platforms}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-zinc-400">Equation:</span>
-                <span className="text-zinc-200 font-mono">{trendlineStats.equation}</span>
-              </div>
+              {!isMobile && (
+                <div className="flex items-center gap-2">
+                  <span className="text-zinc-400">Equation:</span>
+                  <span className="text-zinc-200 font-mono">{trendlineStats.equation}</span>
+                </div>
+              )}
               <div className="flex items-center gap-2">
                 <span className="text-zinc-400">R²:</span>
                 <span className="text-zinc-200 font-medium">{trendlineStats.r2.toFixed(4)}</span>
@@ -670,6 +679,61 @@ export default function Plot3D() {
           </div>
         )}
       </div>
+
+      {/* Mobile Drawer */}
+      {isMobile && (
+        <>
+          {/* Floating Action Button */}
+          <button
+            onClick={() => setMobileDrawerOpen(true)}
+            className="fixed bottom-6 right-6 z-40 w-14 h-14 bg-blue-600 hover:bg-blue-500 text-white rounded-full shadow-lg flex items-center justify-center transition-all active:scale-95"
+            aria-label="Open chart controls"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+          </button>
+
+          {/* Drawer Overlay */}
+          {mobileDrawerOpen && (
+            <div 
+              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+              onClick={() => setMobileDrawerOpen(false)}
+            />
+          )}
+
+          {/* Drawer */}
+          <div 
+            className={`fixed bottom-0 left-0 right-0 z-50 bg-zinc-900 rounded-t-2xl border-t border-zinc-700 transform transition-transform duration-300 ease-out ${
+              mobileDrawerOpen ? 'translate-y-0' : 'translate-y-full'
+            }`}
+            style={{ maxHeight: '85vh' }}
+          >
+            {/* Drawer Handle */}
+            <div className="flex justify-center py-3">
+              <div className="w-12 h-1.5 bg-zinc-600 rounded-full" />
+            </div>
+
+            {/* Drawer Header */}
+            <div className="flex items-center justify-between px-4 pb-3 border-b border-zinc-700">
+              <h3 className="text-lg font-semibold text-white">Chart Controls</h3>
+              <button
+                onClick={() => setMobileDrawerOpen(false)}
+                className="p-2 text-zinc-400 hover:text-white rounded-lg"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Drawer Content */}
+            <div className="overflow-y-auto p-4" style={{ maxHeight: 'calc(85vh - 80px)' }}>
+              {sidebarContent}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

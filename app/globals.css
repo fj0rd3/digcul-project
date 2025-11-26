@@ -73,3 +73,73 @@ body {
   animation: slide-in-right 0.6s ease-out 0.1s forwards;
   opacity: 0;
 }
+
+/* Mobile-specific improvements */
+@media (max-width: 767px) {
+  /* Ensure minimum touch target size */
+  button, 
+  a, 
+  input[type="checkbox"], 
+  input[type="radio"],
+  select {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Better touch feedback */
+  button:active,
+  a:active {
+    opacity: 0.7;
+  }
+
+  /* Improve select appearance on mobile */
+  select {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+
+  /* Better spacing for form elements */
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Smooth scrolling for horizontal scrollable areas */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  /* Hide scrollbars on mobile but keep functionality */
+  .overflow-x-auto::-webkit-scrollbar,
+  .overflow-y-auto::-webkit-scrollbar {
+    display: none;
+  }
+
+  .overflow-x-auto,
+  .overflow-y-auto {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Bottom sheet animation */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out forwards;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}

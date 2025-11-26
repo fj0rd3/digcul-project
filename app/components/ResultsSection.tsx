@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import DigitalCultureGame from './DigitalCultureGame';
 import IdeologyDistribution from './IdeologyDistribution';
+import { useIsMobile } from '../hooks/useIsMobile';
 import PlatformIdeology from './PlatformIdeology';
 import ContentTypesChart from './ContentTypesChart';
 import NewsSourcesChart from './NewsSourcesChart';
@@ -13,6 +14,7 @@ import ExposureEngagementChart from './ExposureEngagementChart';
 export default function ResultsSection() {
   const [scrollY, setScrollY] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,7 +70,22 @@ export default function ResultsSection() {
               Discover Our Results Through Simulation
             </h3>
           </div>
-          <DigitalCultureGame />
+          {isMobile ? (
+            <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl border border-zinc-700/50 p-8 text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-orange-500/10 flex items-center justify-center">
+                <svg className="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">Desktop Experience</h4>
+              <p className="text-zinc-400 text-sm leading-relaxed max-w-md mx-auto">
+                Our interactive simulation uses keyboard controls and is best experienced on a desktop or laptop computer.
+                Visit this page on a larger screen to explore our research findings through gameplay!
+              </p>
+            </div>
+          ) : (
+            <DigitalCultureGame />
+          )}
         </div>
       </div>
 

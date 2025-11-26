@@ -11,6 +11,7 @@ import {
   parseNumeric,
   calculateCorrelation,
 } from '../lib/dataUtils';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 // Dynamically import Plotly to avoid SSR issues
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
@@ -21,6 +22,7 @@ export default function CorrelationHeatmap() {
   const [error, setError] = useState<string | null>(null);
   const [plotData, setPlotData] = useState<any>(null);
   const plotContainerRef = useRef<HTMLDivElement | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     async function loadData() {
@@ -184,30 +186,45 @@ export default function CorrelationHeatmap() {
         </div>
 
         {plotData ? (
-          <div ref={plotContainerRef} className="bg-zinc-900/50 rounded-lg p-6 backdrop-blur-sm">
-            <Plot
-              data={plotData}
-              layout={{
-                font: { color: '#ffffff', size: 11 },
-                paper_bgcolor: 'rgba(0,0,0,0)',
-                plot_bgcolor: 'rgba(0,0,0,0)',
-                height: Math.max(800, correlationMatrix ? correlationMatrix.labels.length * 50 : 800),
-                margin: { l: 200, r: 50, t: 50, b: 200 },
-                xaxis: {
-                  tickangle: -45,
-                  side: 'bottom',
-                },
-                yaxis: {
-                  autorange: 'reversed',
-                },
-              }}
-              config={{
-                displayModeBar: true,
-                displaylogo: false,
-                responsive: true,
-              }}
-              style={{ width: '100%', height: '100%' }}
-            />
+          <div 
+            ref={plotContainerRef} 
+            className={`bg-zinc-900/50 rounded-lg backdrop-blur-sm ${isMobile ? 'p-3 overflow-x-auto' : 'p-6'}`}
+          >
+            <div style={{ minWidth: isMobile ? '600px' : 'auto' }}>
+              <Plot
+                data={plotData}
+                layout={{
+                  font: { color: '#ffffff', size: isMobile ? 9 : 11 },
+                  paper_bgcolor: 'rgba(0,0,0,0)',
+                  plot_bgcolor: 'rgba(0,0,0,0)',
+                  height: isMobile 
+                    ? Math.max(500, correlationMatrix ? correlationMatrix.labels.length * 35 : 500)
+                    : Math.max(800, correlationMatrix ? correlationMatrix.labels.length * 50 : 800),
+                  margin: isMobile 
+                    ? { l: 120, r: 30, t: 30, b: 120 } 
+                    : { l: 200, r: 50, t: 50, b: 200 },
+                  xaxis: {
+                    tickangle: -45,
+                    side: 'bottom',
+                    tickfont: { size: isMobile ? 8 : 11 },
+                  },
+                  yaxis: {
+                    autorange: 'reversed',
+                    tickfont: { size: isMobile ? 8 : 11 },
+                  },
+                }}
+                config={{
+                  displayModeBar: !isMobile,
+                  displaylogo: false,
+                  responsive: true,
+                  scrollZoom: isMobile,
+                }}
+                style={{ width: '100%', height: '100%' }}
+              />
+            </div>
+            {isMobile && (
+              <p className="text-xs text-zinc-500 mt-2 text-center">Scroll horizontally to see full heatmap</p>
+            )}
           </div>
         ) : (
           <div className="flex items-center justify-center min-h-[400px] bg-zinc-900/50 rounded-lg">
