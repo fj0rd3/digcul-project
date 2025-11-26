@@ -5,6 +5,7 @@ import ResultsSection from './components/ResultsSection';
 import ParallelCategories from './components/ParallelCategories';
 import CorrelationHeatmap from './components/CorrelationHeatmap';
 import Plot3D from './components/Plot3D';
+import ConclusionSection from './components/ConclusionSection';
 import AboutSection from './components/AboutSection';
 
 export default function Home() {
@@ -30,6 +31,7 @@ export default function Home() {
         <Plot3D />
       </section>
       
+      <ConclusionSection />
       <AboutSection />
     </div>
   );
