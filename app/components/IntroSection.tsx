@@ -67,8 +67,8 @@ export default function IntroSection() {
           }}
         >
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-            Digital Culture
-            <span className="block text-zinc-400 mt-2">Project Website</span>
+            Social Media and Youth Politics:
+            <span className="block text-zinc-400 mt-2">A Digital Culture Project</span>
           </h1>
           <p className="text-zinc-400 mb-6">Elwyn Breton, Lucie Gehanno, Salome Chaperot, Vladimir Lichvar</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

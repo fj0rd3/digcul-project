@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar';
 import IntroSection from './components/IntroSection';
+import ResearchQuestion from './components/ResearchQuestion';
 import DigitalCultureGame from './components/DigitalCultureGame';
 import StatisticalInsights from './components/StatisticalInsights';
 import ParallelCategories from './components/ParallelCategories';
@@ -13,6 +14,7 @@ export default function Home() {
     <div className="min-h-screen bg-black relative">
       <Navbar />
       <IntroSection />
+      <ResearchQuestion />
       <section id="interactive" className="py-24 bg-gradient-to-b from-black via-zinc-900 to-black">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
