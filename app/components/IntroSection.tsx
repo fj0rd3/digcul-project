@@ -70,6 +70,7 @@ export default function IntroSection() {
             Digital Culture
             <span className="block text-zinc-400 mt-2">Project Website</span>
           </h1>
+          <p className="text-zinc-400 mb-6">Elwyn Breton, Lucie Gehanno, Salome Chaperot, Vladimir Lichvar</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="#visualization"
