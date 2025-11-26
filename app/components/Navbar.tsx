@@ -35,6 +35,12 @@ export default function Navbar() {
                 Introduction
               </a>
               <a
+                href="#results"
+                className="text-zinc-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Findings
+              </a>
+              <a
                 href="#visualization"
                 className="text-zinc-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
@@ -109,6 +115,13 @@ export default function Navbar() {
               className="text-zinc-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors"
             >
               Introduction
+            </a>
+            <a
+              href="#results"
+              onClick={() => setIsOpen(false)}
+              className="text-zinc-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition-colors"
+            >
+              Findings
             </a>
             <a
               href="#visualization"
